@@ -1,16 +1,25 @@
-const sendTo = ws => msg => ws.send(JSON.stringify(msg))
 
-const uuidv4 = () => ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
-  (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-)
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { uuid } from 'uuidv4'
+
+import types from '../shared/types.mjs'
+import { sendTo } from '../shared/utils.mjs'
+
+import App from './components/app'
+import store from './store'
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('../sw.js')
+}
 
 const ws = new WebSocket('ws://127.0.0.1:8080/lobby')
 const send = sendTo(ws)
-const from = uuidv4()
+const from = uuid()
 
 ws.addEventListener('open', () => {
   send({
-    type: 'JOIN',
+    type: types.JOIN,
     payload: {
       from,
       name: 'Elon Musk'
@@ -19,10 +28,9 @@ ws.addEventListener('open', () => {
 })
 
 ws.addEventListener('message', event => {
-  const data = JSON.parse(event.data)
-  console.log(data)
+  const action = JSON.parse(event.data)
+  console.log(action)
+  store.dispatch(action)
 })
 
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./sw.js')
-}
+ReactDOM.render(<App />, document.getElementById('react-root'))

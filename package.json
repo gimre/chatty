@@ -4,13 +4,22 @@
   "main": "index.js",
   "private": true,
   "scripts": {
+    "build": "webpack --config ./client/webpack.config.js",
     "postinstall": "wget https://github.com/matthieua/shecodes/raw/master/fonts/Cerebri-Sans/CerebriSans-Book.ttf -d ./client/font.ttf",
     "server": "node --harmony server/index.mjs",
     "start": "npm run build && npm run server"
   },
+  "babel": {
+    "presets": [
+      "@babel/preset-env",
+      "@babel/preset-react"
+    ]
+  },
   "dependencies": {
     "mime-types": "^2.1.27",
     "ngrok": "^3.2.7",
+    "styled-components": "^5.1.1",
+    "uuidv4": "^6.1.1",
     "ws": "^7.3.0"
   },
   "devDependencies": {
@@ -19,6 +28,10 @@
     "@babel/preset-react": "^7.10.1",
     "babel-loader": "^8.1.0",
     "node-wget": "^0.4.3",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-redux": "^7.2.0",
+    "redux": "^4.0.5",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.12"
   }

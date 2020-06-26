@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="manifest" href="./manifest.json">
+    <style>
+      @font-face {
+        font-family: 'Cerebri Sans';
+        src: url('./font.ttf');
+      }
+
+      :root {
+        --bgActiveColor: white;
+        --bgColor: #ebebeb;
+        --borderColor: #e1e3e5;
+        --borderSize: 1px;
+        --chatHistorySpacing: 20px;
+        --chatInputBorderColor: #878d97;
+        --chatInputHeight: 74px;
+        --chatTimeColor: #9b9fa7;
+        --fgColor: #374050;
+        --headerSize: 60px;
+        --spacerColor: #dddfe2;
+      }
+
+      body {
+        background-color: var(--bgColor);
+        color: var(--fgColor);
+        font-family: 'Cerebri Sans';
+        font-size: 14.7px;
+        margin: 0;
+        overscroll-behavior-y: contain;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+    </style>
+    <script>
+      // window.ontouchstart = _ => {
+      //   const tabs = document.querySelector('tabs')
+      //   const active = tabs.querySelector('tab[active]')
+      //   const inactive = tabs.querySelector('tab:not([active])')
+      //   active.removeAttribute('active')
+      //   inactive.setAttribute('active', '')
+      // }
+    </script>
+    <script src="./dist/app.js" defer></script>
+  </head>
+  <body>
+    <div id="react-root"></div>
+  </body>
+</html>

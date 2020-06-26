@@ -1,9 +1,10 @@
 
 import WebSocket from 'ws'
 
-import { broadcastTo, deserialize, sendTo } from './utils.mjs'
+import types from '../shared/types.mjs'
 
-const isValidMessage = msg => Boolean(msg.type)
+import { broadcastTo, isValidMessage } from './utils.mjs'
+import { deserialize, sendTo } from '../shared/utils.mjs'
 
 const participantSockets = new WeakMap()
 
@@ -24,30 +25,31 @@ export const makeWsServer = (
     const send = sendTo(ws)
 
     const handleMessage = message => {
-      const deserialized = deserialize(message)
-      if (!isValidMessage(deserialized)) {
+      if (!isValidMessage(message)) {
         return
       }
 
-      const from = deserialized.payload?.from
+      const from = message.payload?.from
       if (from) {
         participantSockets.set(ws, from)
       }
 
-      broadcast(deserialized)
+      broadcast(message)
 
-      const reply = dispatch(deserialized)
+      const reply = dispatch(message)
       if (reply) {
         send(reply)
       }
     }
 
+    const handleMessageRaw = message => handleMessage(deserialize(message))
+
     const handleClose = () => {
       const from = participantSockets.get(ws)
-      handleMessage({ type: CLOSE, payload: { from } })
+      handleMessage({ type: types.LEAVE, payload: { from } })
     }
 
-    ws.on('message', handleMessage)
+    ws.on('message', handleMessageRaw)
       .on('close', handleClose)
   })
 
