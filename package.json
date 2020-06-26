@@ -1,0 +1,25 @@
+{
+  "name": "chatty",
+  "description": "A nice chat client",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "postinstall": "wget https://github.com/matthieua/shecodes/raw/master/fonts/Cerebri-Sans/CerebriSans-Book.ttf -d ./client/font.ttf",
+    "server": "node --harmony server/index.mjs",
+    "start": "npm run build && npm run server"
+  },
+  "dependencies": {
+    "mime-types": "^2.1.27",
+    "ngrok": "^3.2.7",
+    "ws": "^7.3.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.10.3",
+    "@babel/preset-env": "^7.10.3",
+    "@babel/preset-react": "^7.10.1",
+    "babel-loader": "^8.1.0",
+    "node-wget": "^0.4.3",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.12"
+  }
+}
