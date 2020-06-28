@@ -26,7 +26,7 @@ export const Header = styled.div`
   justify-content: center;
 `
 
-export const Input = styled.div`
+export const Input = styled.input`
   border: 1px solid var(--chatInputBorderColor);
   border-radius: 3px;
   flex: 1;

@@ -1,12 +1,15 @@
 
-import { createStore } from 'redux'
+import { uuid } from 'uuidv4'
 
-import types from '../shared/types.mjs'
+import types from '../../shared/types.mjs'
+import { getName } from '../utils'
 
 const defaultState = {
   joined: false,
   history: [],
-  participants: {}
+  name: getName(),
+  participants: {},
+  uuid: uuid()
 }
 
 const reducer = (state = defaultState, action) => {
@@ -32,6 +35,14 @@ const reducer = (state = defaultState, action) => {
       }
     }
 
+    case types.MESSAGE: {
+      const history = state.history.concat(payload)
+      return {
+        ...state,
+        history
+      }
+    }
+
     case types.ROOM: {
       const { history, participants } = payload
       return {
@@ -45,4 +56,4 @@ const reducer = (state = defaultState, action) => {
   }
 }
 
-export default createStore(reducer)
+export default reducer
