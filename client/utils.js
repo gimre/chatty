@@ -1,7 +1,7 @@
 
 import { uuid } from 'uuidv4'
 
-import { RsaKeyParams } from './constants'
+import { EmojiLookup, Regex, RsaKeyParams } from './constants'
 
 const getStoredValue = (key, makeFn) => {
   const stored = localStorage.getItem(key)
@@ -23,6 +23,12 @@ export const formatChatTime = dateLike => {
   const date = new Date(dateLike)
   return `${date.getHours()}:${date.getMinutes()}`
 }
+
+// cute hack in the interest of time, won't work for n-sized groups
+export const formatMessage = message => message
+  .replace(Regex.EmojiLTR, lookupEmoji)
+  .replace(Regex.EmojiRTL, lookupEmoji)
+  .replace(Regex.Url, '<a href="$&" target="_blank">$&</a>')
 
 export const fromArrayBuffer = buffer =>
   String.fromCharCode.apply(null, new Uint16Array(buffer))
@@ -56,6 +62,10 @@ export const getName = () =>
     prompt('What is your name?\n(just press Enter for a random one)'))
 
 export const getUid = () => getStoredValue('uid', uuid)
+
+export const lookupEmoji = match => match in EmojiLookup
+  ? EmojiLookup[match]
+  : match
 
 export const toArrayBuffer = str => {
   const buffer = new ArrayBuffer(str.length * 2)

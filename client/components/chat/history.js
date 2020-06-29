@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 
 import types from '../../../shared/types.mjs'
 import { getHistory, getParticipants, getSelfId } from '../../store/selectors'
-import { formatChatTime } from '../../utils'
+import { formatChatTime, formatMessage } from '../../utils'
 
 import {
   ChatHistory,
@@ -56,7 +56,7 @@ export default () => {
               </MessageControls>
             )}
           </MessageHeader>
-          <div>{message}</div>
+          <div dangerouslySetInnerHTML={{ __html: formatMessage(message) }} />
         </Message>
       ))}
       <div ref={historyEndRef} />
