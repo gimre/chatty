@@ -23,7 +23,7 @@ export default ({
         onMouseDown={onHeaderClick}
         onTouchStart={onHeaderClick}
       >
-        <Header>Participants {participantCount}</Header>
+        <Header>Participants ({participantCount})</Header>
       </TabHeader>
       <TabContent>
         <ParticipantList />

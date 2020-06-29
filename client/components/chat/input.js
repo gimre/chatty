@@ -12,20 +12,21 @@ export default () => {
   const inputRef = useRef(null)
   const [ message, setMessage ] = useState(defaultMessage)
 
-  useEffect(() => {
-    inputRef.current?.focus()
-  })
+  // useEffect(() => {
+  //   inputRef.current?.focus()
+  // })
 
   const onChange = () => {
     setMessage(inputRef.current?.value)
   }
 
   const onKeyPress = e => {
-    if (e.key === 'Enter') {
+    const message = inputRef.current?.value
+    if (e.key === 'Enter' && message) {
       dispatch({
         type: types.MESSAGE,
         payload: {
-          message: inputRef.current?.value
+          message
         }
       })
       setMessage(defaultMessage)

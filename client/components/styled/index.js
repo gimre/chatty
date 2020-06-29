@@ -37,9 +37,38 @@ export const Input = styled.input`
 
 export const Message = styled.div`
   line-height: 1.6em;
+  position: relative;
 
   & + & {
     margin-top: var(--chatHistorySpacing);
+  }
+`
+
+export const MessageControls = styled.div`
+  color: var(--spacerColor);
+  display: flex;
+  font-family: 'Cerebri Sans Light';
+  font-size: 10px;
+
+  & > * {
+    cursor: pointer;
+  }
+
+  & > *:hover {
+    color: var(--fgColor);
+  }
+
+  & > *:not(:last-child) {
+    margin-right: 5px;
+  }
+`
+
+export const MessageHeader = styled.div`
+  align-items: center;
+  display: flex;
+
+  & > *:not(:last-child) {
+    margin-right: 7px;
   }
 `
 
@@ -55,7 +84,7 @@ export const Participant = styled.div`
   }
 `
 
-export const Source = styled.div`
+export const Source = styled.span`
   font-weight: bold;
 `
 
@@ -104,7 +133,7 @@ export const TabHeader = styled.div`
   }
 `
 
-export const Time = styled.div`
+export const Time = styled.span`
   color: var(--chatTimeColor);
-  margin-left: 3px;
+  font-family: 'Cerebri Sans Light';
 `

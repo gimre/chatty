@@ -1,5 +1,6 @@
 
 import WebSocket from 'ws'
+import v4 from 'uuidv4'
 
 import types from '../shared/types.mjs'
 
@@ -34,7 +35,19 @@ export const makeWsServer = (
         participantSockets.set(ws, from)
       }
 
-      broadcast(message)
+      if (message.type === types.MESSAGE) {
+        message.payload.id = v4.uuid()
+        message.payload.when = new Date().toISOString()
+      }
+
+      if (!message.payload.to) {
+        broadcast(message)
+      } else {
+        const target = Array.from(wss.clients)
+          .find(ws => participantSockets.get(ws) === message.payload.to)
+
+        sendTo(target)(message)
+      }
 
       const reply = dispatch(message)
       if (reply) {

@@ -1,37 +1,53 @@
 
-import { uuid } from 'uuidv4'
-
 import types from '../../shared/types.mjs'
-import { getName } from '../utils'
+import { getName, getUid } from '../utils'
 
 const defaultState = {
   joined: false,
   history: [],
   name: getName(),
   participants: {},
-  uuid: uuid()
+  uuid: getUid()
 }
 
 const reducer = (state = defaultState, action) => {
   const { type, payload } = action
   switch (type) {
+    case types.DELETE: {
+      const { id } = payload
+      return {
+        ...state,
+        history: state.history.filter(m => m.id !== id)
+      }
+    }
+
     case types.JOIN: {
-      const { from, name } = payload
+      const { from, name, key } = payload
       return {
         ...state,
         participants: {
           ...state.participants,
-          [from]: name
+          [from]: {
+            key,
+            name,
+            active: true
+          }
         }
       }
     }
 
     case types.LEAVE: {
       const { from } = payload
-      const { [from]: leaving, ...remaining } = state.participants
+      const { participants } = state
       return {
         ...state,
-        participants: remaining
+        participants: {
+          ...participants,
+          [from]: {
+            ...participants[from],
+            active: false
+          }
+        }
       }
     }
 

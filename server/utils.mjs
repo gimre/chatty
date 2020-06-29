@@ -12,4 +12,4 @@ export const getManagedStream = stream => new Promise((
   .once('error', e => reject(e))
 )
 
-export const isValidMessage = msg => Boolean(msg.type)
+export const isValidMessage = msg => msg.type != null

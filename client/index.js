@@ -8,5 +8,11 @@ if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('../sw.js')
 }
 
-const ws = new WebSocket('ws://127.0.0.1:8080/lobby')
+const url = Object.assign(new URL('/lobby', window.location), {
+  protocol: window.location.protocol === 'https:'
+    ? 'wss:'
+    : 'ws:'
+})
+
+const ws = new WebSocket(url)
 ReactDOM.render(<App socket={ws} />, document.getElementById('react-root'))

@@ -1,13 +1,14 @@
 
+export const getActiveParticipants = state => Object.fromEntries(
+  Object.entries(getParticipants(state))
+    .filter(([, meta]) => meta.active)
+)
+
 export const getHistory = state => state.history
 
 export const getParticipants = state => state.participants
 
-export const getParticipantCount = state => getParticipantNames(state).length
-
-export const getParticipantIds = state => Object.keys(getParticipants(state))
-
-export const getParticipantNames = state => Object.values(getParticipants(state))
+export const getParticipantCount = state => Object.keys(getActiveParticipants(state)).length
 
 export const getSelfId = state => state.uuid
 

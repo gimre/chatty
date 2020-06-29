@@ -5,14 +5,27 @@ const history = []
 const participants = Object.create(null)
 
 export const handleMessage = {
+  [types.DELETE]: payload => {
+    const { from, id } = payload
+    const found = history.findIndex(m => m.id === id && m.from === from)
+
+    if (found != null) {
+      history.splice(found, 1)
+    }
+  },
+
   [types.JOIN]: payload => {
-    const { from, name } = payload
-    participants[from] = name
+    const { from, name, key } = payload
+    participants[from] = {
+      key,
+      name,
+      active: true
+    }
 
     return {
       type: types.ROOM,
       payload: {
-        history,
+        history: history.filter(m => m.to === from),
         participants
       }
     }
@@ -20,11 +33,13 @@ export const handleMessage = {
 
   [types.LEAVE]: payload => {
     const { from } = payload
-    delete participants[from]
+    const participant = participants[from]
+    if (participant) {
+      participant.active = false
+    }
   },
 
   [types.MESSAGE]: payload => {
-    const { from, message } = payload
-    history.push({ from, message, when: new Date().toISOString() })
+    history.push(payload)
   },
 }

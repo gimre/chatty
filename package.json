@@ -5,13 +5,20 @@
   "private": true,
   "scripts": {
     "build": "webpack --config ./client/webpack.config.js",
-    "postinstall": "wget https://github.com/matthieua/shecodes/raw/master/fonts/Cerebri-Sans/CerebriSans-Book.ttf -d ./client/font.ttf",
+    "get-font": "wget https://github.com/matthieua/shecodes/raw/master/fonts/Cerebri-Sans/CerebriSans-Book.ttf -d ./client/static/font.ttf",
+    "get-font-light": "wget https://github.com/matthieua/shecodes/raw/master/fonts/Cerebri-Sans/CerebriSans-Light.ttf -d ./client/static/font-light.ttf",
+    "postinstall": "npm run get-font && npm run get-font-light",
     "server": "node --harmony server/index.mjs",
     "start": "npm run build && npm run server"
   },
   "babel": {
     "presets": [
-      "@babel/preset-env",
+      ["@babel/preset-env", {
+        "exclude": [
+          "@babel/plugin-transform-async-to-generator",
+          "@babel/plugin-transform-regenerator"
+        ]
+      }],
       "@babel/preset-react"
     ]
   },
