@@ -16,9 +16,9 @@ const decryptMessage = async (message, key) => {
     RsaKeyParams,
     key,
     toArrayBuffer(message)
-  ).catch(e => null)
+  )
 
-  return decryptedMessage && fromArrayBuffer(decryptedMessage)
+  return fromArrayBuffer(decryptedMessage)
 }
 
 export default ws => {
@@ -55,12 +55,7 @@ export default ws => {
 
       if (type === types.MESSAGE) {
         const { message } = payload
-        const decryptedMessage = await decryptMessage(message, key)
-        if (decryptedMessage === null) {
-          return
-        }
-
-        payload.message = decryptedMessage
+        payload.message = await decryptMessage(message, key)
       } else {
         const { history } = payload
 
@@ -68,8 +63,6 @@ export default ws => {
           const { message } = item
           item.message = await decryptMessage(message, key)
         }
-
-        payload.history = history.filter(item => Boolean(item.message))
       }
     }
 
