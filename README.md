@@ -7,6 +7,7 @@ npm start
 ```
 
 ## Known issues
+- trusting clients to validate the source of a message leaves the server vulnerable to spoofing but this would be nullified by jwt authentication, using the same code path
 - using RSA only to encrypt messages limits the message size - larger messages will fail to get encrypted/sent
 - mobile has some problems with styling when the native keyboard opens
 - client-side performance suffers a bit because imported keys are not cached (noticeable on mobile)
