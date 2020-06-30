@@ -1,7 +1,8 @@
 
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
+import localTypes from '../../types'
 import types from '../../../shared/types.mjs'
 import { getHistory, getParticipants, getSelfId } from '../../store/selectors'
 import { formatChatTime, formatMessage } from '../../utils'
@@ -34,18 +35,25 @@ export default () => {
   })
 
   const onEdit = id => () => {
-
+    dispatch({
+      type: localTypes.EDITING,
+      payload: id
+    })
   }
 
   return (
     <ChatHistory>
       {history.map(({
+        edited,
         from,
         id,
         message,
         when
       }) => (
-        <Message key={id}>
+        <Message
+          edited={edited}
+          key={id}
+        >
           <MessageHeader>
             <Source>{participants[from].name || from}</Source>
             <Time>{formatChatTime(when)}</Time>

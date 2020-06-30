@@ -1,6 +1,5 @@
 
 import WebSocket from 'ws'
-import v4 from 'uuidv4'
 
 import types from '../shared/types.mjs'
 
@@ -35,8 +34,12 @@ export const makeWsServer = (
         participantSockets.set(ws, from)
       }
 
+      // these needs to be refactored as a pre-processing step
+      if (message.type === types.EDIT) {
+        message.payload.edited = true
+      }
+
       if (message.type === types.MESSAGE) {
-        message.payload.id = v4.uuid()
         message.payload.when = new Date().toISOString()
       }
 

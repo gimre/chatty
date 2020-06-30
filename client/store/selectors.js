@@ -4,6 +4,15 @@ export const getActiveParticipants = state => Object.fromEntries(
     .filter(([, meta]) => meta.active)
 )
 
+export const getEditing = state => state.editing
+
+export const getEditedMessage = state => {
+  const editing = getEditing(state)
+  return editing
+    ? getHistory(state).find(item => item.id === editing)
+    : editing
+}
+
 export const getHistory = state => state.history
 
 export const getParticipants = state => state.participants

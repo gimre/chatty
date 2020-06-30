@@ -1,9 +1,10 @@
 
 import types from '../../shared/types.mjs'
+import localTypes from '../types'
 import { getName, getUid } from '../utils'
 
 const defaultState = {
-  joined: false,
+  editing: null,
   history: [],
   name: getName(),
   participants: {},
@@ -20,6 +21,23 @@ const reducer = (state = defaultState, action) => {
         history: state.history.filter(m => m.id !== id)
       }
     }
+
+    case types.EDIT: {
+      const { id, message } = payload
+      return {
+        ...state,
+        history: state.history.map(m => m.id === id
+          ? { ...m, message, edited: true }
+          : m
+        )
+      }
+    }
+
+    case localTypes.EDITING:
+      return {
+        ...state,
+        editing: payload
+      }
 
     case types.JOIN: {
       const { from, name, key } = payload

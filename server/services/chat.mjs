@@ -14,6 +14,18 @@ export const handleMessage = {
     }
   },
 
+  [types.EDIT]: payload => {
+    const { from, id, message } = payload
+    const found = history.find(m => m.id === id && m.from === from)
+
+    if (found != null) {
+      Object.assign(found, {
+         message,
+         edited: true
+      })
+    }
+  },
+
   [types.JOIN]: payload => {
     const { from, name, key } = payload
     participants[from] = {

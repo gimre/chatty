@@ -1,4 +1,7 @@
 
+import { uuid } from 'uuidv4'
+
+import localTypes from '../types'
 import types from '../../shared/types.mjs'
 
 import { getActiveParticipants, getSelfId } from './selectors'
@@ -17,7 +20,8 @@ export const DontSend = Symbol('DontSend')
 
 export const remoteSend = send => store => next => async action => {
   console.log(action)
-  if (action[DontSend]) {
+
+  if (action[DontSend] || (action.type in localTypes)) {
     return next(action)
   }
 
@@ -25,11 +29,13 @@ export const remoteSend = send => store => next => async action => {
 
   const actionWithSource = decorateWithSource(getSelfId(state), action)
   const { payload, type } = actionWithSource
-  if (type === types.MESSAGE) {
+  if (type === types.EDIT || type === types.MESSAGE) {
+    console.log(action, actionWithSource, payload)
     const participants = getActiveParticipants(state)
     const { message } = payload
+    const id = uuid()
 
-    for(const [id, participant] of Object.entries(participants)) {
+    for(const [participantId, participant] of Object.entries(participants)) {
       const privateKey = await crypto.subtle.importKey(
         'jwk',
         participant.key,
@@ -47,9 +53,10 @@ export const remoteSend = send => store => next => async action => {
       send({
         ...actionWithSource,
         payload: {
+          id,
           ...actionWithSource.payload,
           message: fromArrayBuffer(encryptedMessage),
-          to: id
+          to: participantId
         }
       })
     }

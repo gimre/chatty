@@ -33,6 +33,10 @@ export const Input = styled.input`
   font-family: inherit;
   height: 44px;
   padding: 0 16px;
+
+  ${props => props.editing && `
+    background-color: lightyellow;
+  `}
 `
 
 export const Message = styled.div`
@@ -42,6 +46,10 @@ export const Message = styled.div`
   & + & {
     margin-top: var(--chatHistorySpacing);
   }
+
+  ${props => props.edited && `
+    font-style: italic;
+  `}
 `
 
 export const MessageControls = styled.div`

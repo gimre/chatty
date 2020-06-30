@@ -41,7 +41,7 @@ export default ws => {
     const action = JSON.parse(event.data)
     const { type, payload } = action
 
-    if (type === types.MESSAGE || type === types.ROOM) {
+    if (type === types.EDIT || type === types.MESSAGE || type === types.ROOM) {
       const { privateKey } = await getKeyPair()
 
       const key = await crypto.subtle.importKey(
@@ -52,17 +52,15 @@ export default ws => {
         ['decrypt']
       )
 
-
-      if (type === types.MESSAGE) {
-        const { message } = payload
-        payload.message = await decryptMessage(message, key)
-      } else {
+      if (type === types.ROOM) {
         const { history } = payload
-
         for(const item of history) {
           const { message } = item
           item.message = await decryptMessage(message, key)
         }
+      } else {
+        const { message } = payload
+        payload.message = await decryptMessage(message, key)
       }
     }
 
