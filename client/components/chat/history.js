@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import localTypes from '../../types'
 import types from '../../../shared/types.mjs'
 import { getEditedMessage, getHistory, getParticipants, getOwnId } from '../../store/selectors'
+import { RoomIdentity } from '../../constants'
 import { formatChatTime, formatMessage } from '../../utils'
 
 import {
@@ -12,6 +13,7 @@ import {
   Message,
   MessageControls,
   MessageHeader,
+  RoomMessage,
   Source,
   Time
 } from '../styled'
@@ -56,7 +58,7 @@ export default () => {
           key={id}
         >
           <MessageHeader>
-            <Source>{participants[from].name || from}</Source>
+            <Source>{participants[from]?.name || from}</Source>
             <Time>{formatChatTime(when)}</Time>
             {from === selfId && (
               <MessageControls>
@@ -65,7 +67,11 @@ export default () => {
               </MessageControls>
             )}
           </MessageHeader>
-          <div dangerouslySetInnerHTML={{ __html: formatMessage(message) }} />
+          {from === RoomIdentity ? (
+            <RoomMessage>{message}</RoomMessage>
+          ) : (
+            <div dangerouslySetInnerHTML={{ __html: formatMessage(message) }} />
+          )}
         </Message>
       ))}
       <div ref={historyEndRef} />

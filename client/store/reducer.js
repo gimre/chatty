@@ -1,5 +1,8 @@
 
+import { uuid } from 'uuidv4'
+
 import types from '../../shared/types.mjs'
+import { RoomIdentity } from '../constants'
 import localTypes from '../types'
 import { getName, getUid } from '../utils'
 
@@ -41,8 +44,15 @@ const reducer = (state = defaultState, action) => {
 
     case types.JOIN: {
       const { from, name, key } = payload
+      const history = state.history.concat({
+        id: uuid(),
+        from: RoomIdentity,
+        message: `${name} joined.`,
+        when: new Date().toISOString()
+      })
       return {
         ...state,
+        history,
         participants: {
           ...state.participants,
           [from]: {
@@ -57,8 +67,16 @@ const reducer = (state = defaultState, action) => {
     case types.LEAVE: {
       const { from } = payload
       const { participants } = state
+      const history = state.history.concat({
+        id: uuid(),
+        from: RoomIdentity,
+        message: `${participants[from]?.name} left.`,
+        when: new Date().toISOString()
+      })
+
       return {
         ...state,
+        history,
         participants: {
           ...participants,
           [from]: {
@@ -81,7 +99,7 @@ const reducer = (state = defaultState, action) => {
       const { history, participants } = payload
       return {
         ...state,
-        history,
+        history: state.history.concat(history),
         participants
       }
     }

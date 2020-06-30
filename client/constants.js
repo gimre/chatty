@@ -12,6 +12,8 @@ export const Regex = {
   Url: /(https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*))/g
 }
 
+export const RoomIdentity = 'MeetingBot'
+
 export const RsaKeyParams = {
   hash: 'SHA-256',
   name: 'RSA-OAEP'

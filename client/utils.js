@@ -21,7 +21,11 @@ const getStoredValueAsync = async (key, makeFnAsync) => {
 
 export const formatChatTime = dateLike => {
   const date = new Date(dateLike)
-  return `${date.getHours()}:${date.getMinutes()}`
+  return `${
+    padLeadingZero(date.getHours())
+  }:${
+    padLeadingZero(date.getMinutes())
+  }`
 }
 
 export const formatMessage = message => Object.entries(EmojiLookup)
@@ -60,6 +64,8 @@ export const getName = () =>
     prompt('What is your name?\n(just press Enter for a random one)'))
 
 export const getUid = () => getStoredValue('uid', uuid)
+
+export const padLeadingZero = str => ('00' + str).slice(-2)
 
 export const toArrayBuffer = str => {
   const buffer = new ArrayBuffer(str.length * 2)

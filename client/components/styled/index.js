@@ -92,6 +92,10 @@ export const Participant = styled.div`
   }
 `
 
+export const RoomMessage = styled.div`
+  color: var(--roomMessageColor);
+`
+
 export const Source = styled.span`
   font-weight: bold;
 `
