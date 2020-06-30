@@ -4,7 +4,7 @@ import { batch, useDispatch, useSelector } from 'react-redux'
 
 import localTypes from '../../types'
 import types from '../../../shared/types.mjs'
-import { getEditedMessage } from '../../store/selectors'
+import { getEditedMessage, getLastOwnMessage } from '../../store/selectors'
 import { ChatInput, Input } from '../styled'
 
 const defaultMessage = ''
@@ -13,6 +13,7 @@ export default () => {
   const dispatch = useDispatch()
   const inputRef = useRef(null)
   const editedMessage = useSelector(getEditedMessage)
+  const lastOwnMessage = useSelector(getLastOwnMessage)
   const [ message, setMessage ] = useState(defaultMessage)
 
   useEffect(() => {
@@ -20,9 +21,7 @@ export default () => {
   })
 
   useEffect(() => {
-    if (editedMessage) {
-      setMessage(editedMessage.message)
-    }
+    setMessage(editedMessage ? editedMessage.message : defaultMessage)
   }, [editedMessage])
 
   const onChange = () => {
@@ -30,14 +29,20 @@ export default () => {
   }
 
   const onKeyDown = e => {
-    if (e.keyCode === 27) {
+    if (e.key === 'Escape') {
       if (editedMessage) {
         dispatch({
           type: localTypes.EDITING,
           payload: null
         })
       }
-      setMessage(defaultMessage)
+    }
+
+    if (e.key === 'ArrowUp' && !editedMessage && lastOwnMessage) {
+      dispatch({
+        type: localTypes.EDITING,
+        payload: lastOwnMessage.id
+      })
     }
   }
 

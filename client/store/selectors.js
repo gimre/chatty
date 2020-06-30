@@ -15,10 +15,18 @@ export const getEditedMessage = state => {
 
 export const getHistory = state => state.history
 
+export const getLastOwnMessage = state => {
+  const ownId = getOwnId(state)
+  return getHistory(state)
+    .filter(m => m.from === ownId)
+    .sort((a, b) => new Date(a.when) - new Date(b.when))
+    .pop()
+}
+
 export const getParticipants = state => state.participants
 
 export const getParticipantCount = state => Object.keys(getActiveParticipants(state)).length
 
-export const getSelfId = state => state.uuid
+export const getOwnId = state => state.uuid
 
-export const getSelfName = state => state.name
+export const getOwnName = state => state.name

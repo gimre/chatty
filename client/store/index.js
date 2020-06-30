@@ -9,7 +9,7 @@ import { fromArrayBuffer, getKeyPair, toArrayBuffer } from '../utils'
 
 import { DontSend, remoteSend } from './middleware'
 import reducer from './reducer'
-import { getSelfName } from './selectors'
+import { getOwnName } from './selectors'
 
 const decryptMessage = async (message, key) => {
   const decryptedMessage = await crypto.subtle.decrypt(
@@ -32,7 +32,7 @@ export default ws => {
       type: types.JOIN,
         payload: {
           key: publicKey,
-          name: getSelfName(store.getState())
+          name: getOwnName(store.getState())
         }
     })
   })

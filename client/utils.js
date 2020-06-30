@@ -24,10 +24,8 @@ export const formatChatTime = dateLike => {
   return `${date.getHours()}:${date.getMinutes()}`
 }
 
-// cute hack in the interest of time, won't work for n-sized groups
-export const formatMessage = message => message
-  .replace(Regex.EmojiLTR, lookupEmoji)
-  .replace(Regex.EmojiRTL, lookupEmoji)
+export const formatMessage = message => Object.entries(EmojiLookup)
+  .reduce((m, [text, emoji]) => m.split(text).join(emoji), message)
   .replace(Regex.Url, '<a href="$&" target="_blank">$&</a>')
 
 export const fromArrayBuffer = buffer =>
@@ -62,10 +60,6 @@ export const getName = () =>
     prompt('What is your name?\n(just press Enter for a random one)'))
 
 export const getUid = () => getStoredValue('uid', uuid)
-
-export const lookupEmoji = match => match in EmojiLookup
-  ? EmojiLookup[match]
-  : match
 
 export const toArrayBuffer = str => {
   const buffer = new ArrayBuffer(str.length * 2)

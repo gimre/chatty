@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 
 import localTypes from '../../types'
 import types from '../../../shared/types.mjs'
-import { getHistory, getParticipants, getSelfId } from '../../store/selectors'
+import { getEditedMessage, getHistory, getParticipants, getOwnId } from '../../store/selectors'
 import { formatChatTime, formatMessage } from '../../utils'
 
 import {
@@ -19,9 +19,10 @@ import {
 export default () => {
   const dispatch = useDispatch()
   const historyEndRef = useRef()
+  const editedMessage = useSelector(getEditedMessage)
   const history = useSelector(getHistory)
   const participants = useSelector(getParticipants)
-  const selfId = useSelector(getSelfId)
+  const selfId = useSelector(getOwnId)
 
   useEffect(() => {
     historyEndRef.current?.scrollIntoView()
@@ -37,7 +38,7 @@ export default () => {
   const onEdit = id => () => {
     dispatch({
       type: localTypes.EDITING,
-      payload: id
+      payload: editedMessage ? null : id
     })
   }
 

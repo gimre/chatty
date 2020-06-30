@@ -4,7 +4,7 @@ import { uuid } from 'uuidv4'
 import localTypes from '../types'
 import types from '../../shared/types.mjs'
 
-import { getActiveParticipants, getSelfId } from './selectors'
+import { getActiveParticipants, getOwnId } from './selectors'
 import { RsaKeyParams } from '../constants'
 import { fromArrayBuffer, toArrayBuffer } from '../utils'
 
@@ -26,11 +26,12 @@ export const remoteSend = send => store => next => async action => {
   }
 
   const state = store.getState()
-
-  const actionWithSource = decorateWithSource(getSelfId(state), action)
+  const actionWithSource = decorateWithSource(getOwnId(state), action)
   const { payload, type } = actionWithSource
+
   if (type === types.EDIT || type === types.MESSAGE) {
-    console.log(action, actionWithSource, payload)
+    console.log(action)
+
     const participants = getActiveParticipants(state)
     const { message } = payload
     const id = uuid()
