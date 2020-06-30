@@ -6,6 +6,13 @@ npm install
 npm start
 ```
 
+## Features
+- single chat room, any number of participants
+- end-to-end encryption
+- PWA support, installable from mobile browsers
+- emoji support
+- link support
+
 ## Known issues
 - trusting clients to validate the source of a message leaves the server vulnerable to spoofing but this would be nullified by jwt authentication, using the same code path
 - using RSA only to encrypt messages limits the message size - larger messages will fail to get encrypted/sent
