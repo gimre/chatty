@@ -19,6 +19,7 @@ npm start
 - mobile has some problems with styling when the native keyboard opens
 - client-side performance suffers a bit because imported keys are not cached (noticeable on mobile)
 - fonts don't seem quite alright
+- ngrok tunnel is slow
 
 ## Further improvements
 - use a randomly-generated AES key for each message to enable arbitrary length messages

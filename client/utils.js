@@ -1,7 +1,7 @@
 
 import { uuid } from 'uuidv4'
 
-import { EmojiLookup, Regex, RsaKeyParams } from './constants'
+import { EmojiLookup, Regex, RsaKeyParams, Vocabulary } from './constants'
 
 const getStoredValue = (key, makeFn) => {
   const stored = localStorage.getItem(key)
@@ -61,7 +61,16 @@ export const getKeyPair = () => getStoredValueAsync('keyPair', async () => {
 
 export const getName = () =>
   getStoredValue('name', () =>
-    prompt('What is your name?\n(just press Enter for a random one)'))
+    prompt('What is your name?\n(just press OK for a random one)')
+    || getRandomName())
+
+export const getRandomName = () => `${
+  Vocabulary.Adjectives[getRandomInteger(Vocabulary.Adjectives.length)]
+}${
+  Vocabulary.Nouns[getRandomInteger(Vocabulary.Nouns.length)]
+}`
+
+export const getRandomInteger = ceiling => Math.random() * ceiling | 0
 
 export const getUid = () => getStoredValue('uid', uuid)
 
