@@ -30,7 +30,7 @@
     "ngrok": "^3.2.7",
     "styled-components": "^5.1.1",
     "uuidv4": "^6.1.1",
-    "ws": "^7.3.0"
+    "ws": "^7.4.6"
   },
   "devDependencies": {
     "@babel/core": "^7.10.3",
